@@ -12,6 +12,9 @@ const userRoutes = require("./routes/userRoutes")
 //Define employeeRoutes - path : ./routes/employeeRoutes
 const employeeRoutes = require("./routes/employeeRoutes")
 
+//Define Centralized Error Handler 
+const errorHandler = require("./middleware/errorHandler")
+
 const app = express()
 
 app.use(helmet())
@@ -34,6 +37,9 @@ app.get("/health", (request, response) => {
         message: "COMP3123 Assignemnt 1 API is running"
     })
 })
+
+//Apply Centralized error handler after all routes 
+app.use(errorHandler)
 
 //Define the port 
 const PORT = process.env.PORT || 3000;
