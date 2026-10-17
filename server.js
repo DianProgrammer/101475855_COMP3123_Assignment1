@@ -9,6 +9,9 @@ const connectDB = require("./config/db")
 //Define userRoutes : Path = ./routes/userRoutes
 const userRoutes = require("./routes/userRoutes")
 
+//Define employeeRoutes - path : ./routes/employeeRoutes
+const employeeRoutes = require("./routes/employeeRoutes")
+
 const app = express()
 
 app.use(helmet())
@@ -16,6 +19,9 @@ app.use(express.json())
 
 //user - userRoutes - path : api/v1/user
 app.use("/api/v1/user", userRoutes)
+
+//employee - employeeRoutes - path : api/v1/emp
+app.use("/api/v1/emp", employeeRoutes)
 
 //GET - Path : /health 
 app.get("/health", (request, response) => {
