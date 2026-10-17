@@ -6,10 +6,16 @@ const helmet = require("helmet")
 //Define the variable for DB : Path = ./config/db
 const connectDB = require("./config/db")
 
+//Define userRoutes : Path = ./routes/userRoutes
+const userRoutes = require("./routes/userRoutes")
+
 const app = express()
 
 app.use(helmet())
 app.use(express.json())
+
+//user - userRoutes - path : api/v1/user
+app.use("/api/v1/user", userRoutes)
 
 //GET - Path : /health 
 app.get("/health", (request, response) => {
