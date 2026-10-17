@@ -140,7 +140,7 @@ const getEmployeeById = async(request, response, next) => {
 
 
 
- //PUT Method - path : /api/v1/emp/employees/:eid
+//PUT Method - path : /api/v1/emp/employees/:eid
 //Define the updateEmployee function
 const updateEmployee = async (request, response, next) => {
 
@@ -223,5 +223,51 @@ const updateEmployee = async (request, response, next) => {
     }
 };
 
-//export section [createEmployee, getEmployees, getEmployeeById, updateEmployee]
-module.exports = { createEmployee, getEmployees, getEmployeeById, updateEmployee };
+
+//DELETE Method - path : /api/v1/emp/employees?eid=xxx
+//Define the deleteEmployee function
+const deleteEmployee = async (request, response, next) => {
+
+    //try section
+    try {
+        //Get employee by ID from query params
+        const { eid } = request.query;
+
+        //if statement : check the employee ID
+        if (!mongoose.isValidObjectId(eid)) {
+            //return status code (400)
+            return response.status(400).json({
+                //show the message error
+                message: "Invalid Employee ID"
+            });
+        }
+
+        //Find and delete Employee belonging to authenticated user
+        const employee = await Employee.findOneAndDelete({
+            _id: eid,
+            user: request.userId
+        });
+
+        //if statement : check if the employee exists
+        if (!employee) {
+            //return status code (404)
+            return response.status(404).json({
+                //show message error
+                message: "Employee not found!"
+            });
+        }
+
+        //return status code (204) without response body
+        return response.status(204).send();
+
+    }
+
+    //catch - error
+    catch (error) {
+        next(error);
+    }
+};
+
+
+//export section [createEmployee, getEmployees, getEmployeeById, updateEmployee, deleteEmployee]
+module.exports = {createEmployee, getEmployees, getEmployeeById, updateEmployee,deleteEmployee };

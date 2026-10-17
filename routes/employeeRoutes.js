@@ -3,7 +3,7 @@
 const auth = require("../middleware/auth");
 
 //Define Employee Controller : path = ../controllers/employeeController
-const { createEmployee, getEmployees, getEmployeeById, updateEmployee } = require("../controllers/employeeController");
+const { createEmployee, getEmployees, getEmployeeById, updateEmployee, deleteEmployee } = require("../controllers/employeeController");
 
 const express = require("express");
 
@@ -24,6 +24,9 @@ router.get("/employees/:eid", getEmployeeById);
 
 //PUT Employee by ID - path : /employees/:eid
 router.put("/employees/:eid", updateEmployee)
+
+//DELETE Employee by ID - path : /employees?eid=xxx
+router.delete("/employees", deleteEmployee);
 
 //export section
 module.exports = router;
