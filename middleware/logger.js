@@ -9,7 +9,9 @@ const fs = require("fs")
 const path = require("path")
 
 //Define the logs folder path - use join() - path : ../logs
-const logsFolder = path.join(__dirname, "../logs")
+const logsFolder = process.env.VERCEL
+    ? path.join("/tmp", "logs")
+    : path.join(__dirname, "../logs")
 
 //if statement : check the logs folder exists
 if (!fs.existsSync(logsFolder)) {
