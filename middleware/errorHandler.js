@@ -1,4 +1,5 @@
-//Define Error Logger - path : ./errorLogger
+
+ //Define Error Logger - path : ./errorLogger
 const logError = require("./errorLogger")
 
 //Define the Centralized Error Handler
@@ -6,6 +7,11 @@ const errorHandler = (error, request, response, next) => {
 
     //Define the status code base on the error type
     let statusCode = 500
+
+    //if statement : check if the request JSON format is invalid
+    if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+        statusCode = 400
+    }
 
     //if statement : Check if the error is validation error or cast error
     if (error.name === "ValidationError" || error.name === "CastError") {
@@ -19,6 +25,15 @@ const errorHandler = (error, request, response, next) => {
 
     //Log the error without sensitive information
     logError(request, error.name || "ServerError", statusCode)
+
+    //if statement : check if the request JSON format is invalid
+    if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+        //return status code (400)
+        return response.status(400).json({
+            //show the message content
+            message: "Invalid JSON format!"
+        })
+    }
 
     //if statement : check the error is Mongoose db Validation error
     if (error.name === "ValidationError") {
